@@ -24,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-public class Config {
+public class WebConfiguration {
 
   private static final String USER = "USER";
   private static final String PATH_ACTIVITIES = "/activities";
@@ -34,7 +34,7 @@ public class Config {
   private static final String ACCEPT = "Accept";
   private final EverydayBetterConfig everydayBetterConfig;
 
-  public Config(final EverydayBetterConfig everydayBetterConfig) {
+  public WebConfiguration(final EverydayBetterConfig everydayBetterConfig) {
     this.everydayBetterConfig = everydayBetterConfig;
   }
 
