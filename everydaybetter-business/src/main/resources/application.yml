@@ -1,0 +1,12 @@
+co.simplon.everydaybetterbusiness:
+  cost: ${val.bcrypt-cost:4} # by default, it will look for the value in val.bcrypt-cost, if the value is not existing,
+  # then it will automatically apply default value 4 to find it
+  jwt:
+    expiration: 1
+    issuer: ""
+  origins: "test"
+  secret: "secret"
+
+# This is the thing you can add in your application-dev.yml to specify your need
+#val:
+#  bcrypt-cost: 10
