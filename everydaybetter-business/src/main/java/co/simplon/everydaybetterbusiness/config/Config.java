@@ -1,5 +1,6 @@
 package co.simplon.everydaybetterbusiness.config;
 
+import co.simplon.everydaybetterbusiness.dtos.JwtProvider;
 import com.auth0.jwt.algorithms.Algorithm;
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.context.annotation.Bean;
