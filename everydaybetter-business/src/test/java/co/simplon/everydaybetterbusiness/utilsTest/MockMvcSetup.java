@@ -2,7 +2,7 @@ package co.simplon.everydaybetterbusiness.utilsTest;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 
-import co.simplon.everydaybetterbusiness.common.utils.ConverterUtils;
+import co.simplon.everydaybetterbusiness.common.utils.AppUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 public abstract class MockMvcSetup {
 
-  protected static final ObjectMapper mapper = ConverterUtils.getMapper();
+  protected static final ObjectMapper mapper = AppUtils.getMapper();
   protected static final SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor validToken = jwt().jwt(
     Jwt.withTokenValue("tokenValue").claim("sub", "test@example.com").header("header", "header").build()
   );

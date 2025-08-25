@@ -1,6 +1,6 @@
 package co.simplon.everydaybetterbusiness.controllers;
 
-import co.simplon.everydaybetterbusiness.common.AppUtils;
+import co.simplon.everydaybetterbusiness.common.utils.AppUtils;
 import co.simplon.everydaybetterbusiness.dtos.ActivityCreate;
 import co.simplon.everydaybetterbusiness.dtos.ActivityUpdate;
 import co.simplon.everydaybetterbusiness.models.ActivityDetailModel;
