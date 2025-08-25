@@ -46,74 +46,74 @@ public class Config {
         registry
           .addMapping(PATH_ACTIVITIES)
           .allowedMethods("POST", "GET")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600); //how long the browser can cache the CORS response before remaking an OPTIONS request 1h, default 30m
         registry
           .addMapping(PATH_ACTIVITIES_ID)
           .allowedMethods("GET", "PUT", "DELETE")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping("/categories")
           .allowedMethods("GET")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping(PATH_TRACKING_LOG)
           .allowedMethods("POST", "GET", "DELETE")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping("/tracking-logs/update")
           .allowedMethods("PATCH")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping("/tracking-logs/progress-summary")
           .allowedMethods("GET")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping("/users/create")
           .allowedMethods("POST")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping("/users/authenticate")
           .allowedMethods("POST")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
         registry
           .addMapping("/users/logout")
           .allowedMethods("POST")
-          .allowedOrigins(everydayBetterConfig.business().origins())
+          .allowedOrigins(everydayBetterConfig.getBusinessConfig().origins())
           .allowCredentials(true)
           .allowedHeaders(CONTENT_TYPE, ACCEPT)
           .maxAge(3600);
-        registry.addMapping("/v3/api-docs/**").allowedOrigins(everydayBetterConfig.business().origins());
-        registry.addMapping("/swagger-ui/**").allowedOrigins(everydayBetterConfig.business().origins());
+        registry.addMapping("/v3/api-docs/**").allowedOrigins(everydayBetterConfig.getBusinessConfig().origins());
+        registry.addMapping("/swagger-ui/**").allowedOrigins(everydayBetterConfig.getBusinessConfig().origins());
       }
     };
   }
 
   @Bean
   PasswordEncoder encoder() {
-    return new BCryptPasswordEncoder(everydayBetterConfig.business().cost());
+    return new BCryptPasswordEncoder(everydayBetterConfig.getBusinessConfig().cost());
   }
 
   @Bean
@@ -151,7 +151,7 @@ public class Config {
       // Always last rule:
       .authorizeHttpRequests(reqs -> reqs.anyRequest().authenticated())
       .oauth2ResourceServer(
-        oauth2 -> oauth2.bearerTokenResolver(new CookieTokenResolver()).jwt(Customizer.withDefaults()) // Configuration default JWT
+        oauth2 -> oauth2.bearerTokenResolver(everydayBetterConfig).jwt(Customizer.withDefaults()) // Configuration default JWT
       )
       .build();
   }
@@ -159,20 +159,20 @@ public class Config {
   @Bean
   JwtDecoder jwtDecoder() {
     // Tell Spring how to verify JWT signature
-    final var secretKey = new SecretKeySpec(everydayBetterConfig.business().secret().getBytes(), "HMACSHA256");
+    final var secretKey = new SecretKeySpec(everydayBetterConfig.getBusinessConfig().secret().getBytes(), "HMACSHA256");
     final var decoder = NimbusJwtDecoder.withSecretKey(secretKey).macAlgorithm(MacAlgorithm.HS256).build();
-    final var validator = JwtValidators.createDefaultWithIssuer(everydayBetterConfig.jwtConfig().issuer());
+    final var validator = JwtValidators.createDefaultWithIssuer(everydayBetterConfig.getJwtConfig().issuer());
     decoder.setJwtValidator(validator);
     return decoder;
   }
 
   @Bean
   JwtProvider jwtProvider() {
-    final Algorithm algorithm = Algorithm.HMAC256(everydayBetterConfig.business().secret());
+    final var algorithm = Algorithm.HMAC256(everydayBetterConfig.getBusinessConfig().secret());
     return new JwtProvider(
       algorithm,
-      everydayBetterConfig.jwtConfig().expiration(),
-      everydayBetterConfig.jwtConfig().issuer()
+      everydayBetterConfig.getJwtConfig().expiration(),
+      everydayBetterConfig.getJwtConfig().issuer()
     );
   }
 }
