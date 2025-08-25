@@ -1,0 +1,7 @@
+co.simplon.everydaybetterbusiness:
+  cost: 4
+  origins: "origin"
+  secret: "secret"
+  jwt:
+    expiration: 1
+    issuer: "issuer"
